@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      uuid-representation: standard
+      uri: mongodb://localhost:27017/passwordManagement_db
+      database: passwordManagement_db
