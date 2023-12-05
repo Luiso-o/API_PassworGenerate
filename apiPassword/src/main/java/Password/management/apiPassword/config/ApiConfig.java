@@ -11,7 +11,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         email = "cheportillo@gmail.com",
                         url = "https://github.com/Luiso-o"
                 ),
-                description = "API para gestionar contraseñas de los usuarios",
+                description = "API para gestionar contraseñas de los usuarios.                              " + "\n" +
+                        "![logo](https://cdn-icons-png.flaticon.com/128/9251/9251073.png)",
                 title = "Password Management",
                 version = "1.0",
                 license = @License(
