@@ -9,7 +9,7 @@
     <img src="https://cdn-icons-png.flaticon.com/128/9251/9251073.png" alt="Logo" width="80" height="80">
     </a>
 </div>
-<h3 align="center" >App Juego De Dados</h3>
+<h3 align="center" >App Password Genarate</h3>
 
 ## Opciones para descargar el proyecto:
 -  Puede descargar el proyecto en formato Zip.
@@ -18,7 +18,7 @@
 ## Importante antes de usar la API:
 
 ## Versiones necesarias:
-- Maven 3.9.3 
+- Gradle 8.5 
 - JDK 17.0.1
 - Kotlin 1.8.10
 - SpringFramework.boot 3.1.4
