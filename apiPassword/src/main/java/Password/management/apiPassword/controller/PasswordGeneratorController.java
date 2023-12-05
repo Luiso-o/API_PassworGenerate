@@ -1,7 +1,7 @@
 package Password.management.apiPassword.controller;
 
-import Password.management.apiPassword.Dto.PasswordDto;
-import Password.management.apiPassword.service.PasswordServiceImpl;
+import Password.management.apiPassword.Dto.PasswordGeneratorDto;
+import Password.management.apiPassword.service.PasswordGeneratorServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "password")
-public class PasswordController {
+public class PasswordGeneratorController {
 
     @Autowired
-    private PasswordServiceImpl passwordService;
+    private PasswordGeneratorServiceImpl passwordService;
 
     @Operation(summary = "Genera las contraseñas que necesites", description = "La longitud no debe ser menor a 7, de lo" +
             " contrario el valor por defecto será 8")
@@ -26,11 +26,11 @@ public class PasswordController {
             @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
     })
     @GetMapping(value = "generate")
-    public ResponseEntity<List<PasswordDto>> generatePasswords(
-            @RequestParam int length,
+    public ResponseEntity<List<PasswordGeneratorDto>> generatePasswords(
+            @RequestParam (required = false, defaultValue = "8") int length,
             @RequestParam int quantity
     ){
-        List<PasswordDto> myPasswordsDto = passwordService.generatePasswords(length < 8 ? 8 : length,quantity);
+        List<PasswordGeneratorDto> myPasswordsDto = passwordService.generatePasswords(length < 8 ? 8 : length,quantity);
         return ResponseEntity.status(HttpStatus.OK).body(myPasswordsDto);
     }
 

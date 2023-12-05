@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface PasswordRepository extends MongoRepository<PasswordDocument, UUID> {
+public interface PasswordGeneratorRepository extends MongoRepository<PasswordDocument, UUID> {
 }

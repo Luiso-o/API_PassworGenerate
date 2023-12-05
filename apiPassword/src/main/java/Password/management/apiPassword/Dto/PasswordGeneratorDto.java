@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PasswordDto {
+public class PasswordGeneratorDto {
     private String password;
     private String secure;
 }
