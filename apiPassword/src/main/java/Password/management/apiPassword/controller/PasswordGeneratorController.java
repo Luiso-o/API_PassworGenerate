@@ -28,10 +28,25 @@ public class PasswordGeneratorController {
     @GetMapping(value = "generate")
     public ResponseEntity<List<PasswordGeneratorDto>> generatePasswords(
             @RequestParam (required = false, defaultValue = "8") int length,
-            @RequestParam int quantity
+            @RequestParam (required = false, defaultValue = "1") int quantity
     ){
         List<PasswordGeneratorDto> myPasswordsDto = passwordService.generatePasswords(length < 8 ? 8 : length,quantity);
         return ResponseEntity.status(HttpStatus.OK).body(myPasswordsDto);
+    }
+
+    @Operation(summary = "Guarda tu contraseña en la base de datos", description = "Puedes usar el generador de " +
+            "contraseñas o crearte una propia")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contraseña guardada correctamente"),
+            @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
+    })
+    @GetMapping(value = "add")
+    public ResponseEntity<PasswordGeneratorDto> createPassword(
+            @RequestParam String password,
+            @RequestParam String name
+    ){
+        PasswordGeneratorDto passwordGeneratorDto = passwordService.savePassword(password,name);
+        return ResponseEntity.status(HttpStatus.OK).body(passwordGeneratorDto);
     }
 
 }
