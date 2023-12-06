@@ -34,19 +34,4 @@ public class PasswordGeneratorController {
         return ResponseEntity.status(HttpStatus.OK).body(myPasswordsDto);
     }
 
-    @Operation(summary = "Guarda tu contraseña en la base de datos", description = "Puedes usar el generador de " +
-            "contraseñas o crearte una propia")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Contraseña guardada correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
-    })
-    @GetMapping(value = "add")
-    public ResponseEntity<PasswordGeneratorDto> createPassword(
-            @RequestParam String password,
-            @RequestParam String name
-    ){
-        PasswordGeneratorDto passwordGeneratorDto = passwordService.savePassword(password,name);
-        return ResponseEntity.status(HttpStatus.OK).body(passwordGeneratorDto);
-    }
-
 }

@@ -20,16 +20,6 @@ public class PasswordGeneratorMethods {
     private static final int MIN_LOWERCASE = 1;
     private static final int MIN_UPPERCASE = 2;
 
-    public PasswordGeneratorDto convertPasswordDocumentToDto(PasswordDocument passwordDocument){
-        log.info("Se está convirtiendo el documento a Dto {} ",passwordDocument);
-       PasswordGeneratorDto passwordDto =  PasswordGeneratorDto.builder()
-                .password(passwordDocument.getPassword())
-                .secure(isSecure(passwordDocument.getPassword()) ? "Es segura" : "No es tan segura" )
-                .build();
-       log.info("La conversión fue exitosa {} ", passwordDto);
-       return passwordDto;
-    }
-
     public String generatePassword(int length) {
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
