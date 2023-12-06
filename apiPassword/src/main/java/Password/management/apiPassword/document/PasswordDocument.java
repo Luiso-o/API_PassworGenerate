@@ -3,6 +3,8 @@ package Password.management.apiPassword.document;
 import lombok.*;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import java.util.UUID;
 
 @Data
@@ -12,7 +14,7 @@ import java.util.UUID;
 @Document(value = "passwords")
 public class PasswordDocument {
 
-    @Id
+    @MongoId
     private UUID password_id;
     private String creationDate;
     private int length;
