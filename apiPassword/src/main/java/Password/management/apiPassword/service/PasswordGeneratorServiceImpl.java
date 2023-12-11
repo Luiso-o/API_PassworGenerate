@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -32,7 +31,7 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
         log.info("Generando " + quantity + " contraseñas");
         myPasswords = IntStream.range(0, quantity)
                 .mapToObj(i -> passwordGeneratorMethods.generatePassword(length))
-                .collect(Collectors.toList());
+                .toList();
 
         log.info( myPasswords.size() + " contraseñas generadas.");
 
@@ -40,7 +39,7 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
             boolean secure = passwordGeneratorMethods.isSecure(myPassword);
             passwordDtos.add(PasswordGeneratorDto.builder()
                     .password(myPassword)
-                    .secure(secure ? "Es segura" : "No es tan segura")
+                    .secure(secure ? "Es muy segura" : "Es medianamente segura")
                     .build());
         });
         log.info("Se han convertido los documentos en Dtos");

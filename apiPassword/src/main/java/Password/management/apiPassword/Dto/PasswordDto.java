@@ -11,6 +11,7 @@ import java.util.UUID;
 @Builder
 public class PasswordDto {
     private String password_id;
+    private String password;
     private String creationDate;
     private String length;
 }
