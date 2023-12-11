@@ -2,6 +2,8 @@ package Password.management.apiPassword.service;
 
 import Password.management.apiPassword.Dto.PasswordDto;
 import Password.management.apiPassword.document.PasswordDocument;
+import Password.management.apiPassword.enumerations.PasswordUse;
+import Password.management.apiPassword.exception.UUIDNotFoundException;
 import Password.management.apiPassword.helper.PasswordManagerMethods;
 import Password.management.apiPassword.repositories.PasswordRepository;
 import org.slf4j.Logger;
@@ -10,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PasswordManagerServiceImpl implements PasswordManagerService {
@@ -23,18 +26,17 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     private PasswordManagerMethods passwordMethods;
 
     @Override
-    public PasswordDto savePassword(String password, String name) {
+    public PasswordDto savePassword(String password, String name, PasswordUse use) {
         log.info("Creando documento Password");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String formattedDate = LocalDate.now().format(formatter);
 
         PasswordDocument passwordDocument = PasswordDocument.builder()
                 .password_id(UUID.randomUUID())
-                .creationDate(formattedDate)
-                .length(password.length())
+                .creationDate(LocalDate.now())
+                .seniority(1)
+                .use(use)
                 .name(name)
                 .password(password)
+                .length(password.length())
                 .build();
 
         log.info("Se a creado el documento correctamente {} ", passwordDocument);
@@ -44,4 +46,29 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 
         return passwordMethods.convertPasswordDocumentToDto(passwordDocument);
     }
+
+    @Override
+    public PasswordDto findPasswordById(UUID idPassword) {
+        log.info("Buscando la contraseña con el ID: " + idPassword);
+        PasswordDocument myPassword = passwordRepository.findById(idPassword)
+                .orElseThrow(() -> new UUIDNotFoundException("No se encontró ninguna contraseña con el id " + idPassword));
+
+        passwordMethods.getDaysSinceCreation(myPassword.getCreationDate());
+        passwordRepository.save(myPassword);
+
+        return passwordMethods.convertPasswordDocumentToDto(myPassword);
+    }
+
+    @Override
+    public List<PasswordDto> findPasswordByUse(PasswordUse use) {
+        List<PasswordDocument> passwords = passwordRepository.findByUse(use);
+
+        //getDaysSinceCreation: calcula los días transcurridos desde la creacion de la contraseña
+        return passwords.stream()
+                .peek(password -> passwordMethods.getDaysSinceCreation(password.getCreationDate()))
+                .map(passwordMethods::convertPasswordDocumentToDto)
+                .collect(Collectors.toList());
+    }
+
+
 }
