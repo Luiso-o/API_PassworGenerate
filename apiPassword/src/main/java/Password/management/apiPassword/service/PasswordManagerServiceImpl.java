@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         PasswordDocument passwordDocument = PasswordDocument.builder()
                 .password_id(UUID.randomUUID())
                 .creationDate(LocalDate.now())
-                .seniority(1)
+                .seniority(0)
                 .use(use)
                 .name(name)
                 .password(password)
@@ -53,21 +54,46 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         PasswordDocument myPassword = passwordRepository.findById(idPassword)
                 .orElseThrow(() -> new UUIDNotFoundException("No se encontró ninguna contraseña con el id " + idPassword));
 
-        passwordMethods.getDaysSinceCreation(myPassword.getCreationDate());
-        passwordRepository.save(myPassword);
+        LocalDate creationDate = myPassword.getCreationDate();
 
+        if(!(creationDate.equals(LocalDate.now()))) {
+            passwordMethods.updateSeniority(myPassword);
+        }
         return passwordMethods.convertPasswordDocumentToDto(myPassword);
     }
 
     @Override
     public List<PasswordDto> findPasswordByUse(PasswordUse use) {
         List<PasswordDocument> passwords = passwordRepository.findByUse(use);
+        List<PasswordDto> passwordsDto = new ArrayList<>();
 
-        //getDaysSinceCreation: calcula los días transcurridos desde la creacion de la contraseña
-        return passwords.stream()
-                .peek(password -> passwordMethods.getDaysSinceCreation(password.getCreationDate()))
-                .map(passwordMethods::convertPasswordDocumentToDto)
-                .collect(Collectors.toList());
+        for (PasswordDocument password : passwords) {
+            LocalDate creationDate = password.getCreationDate();
+
+            if (!(creationDate.equals(LocalDate.now()))) {
+                passwordMethods.updateSeniority(password);
+            } else {
+                PasswordDto dto = passwordMethods.convertPasswordDocumentToDto(password);
+                passwordsDto.add(dto);
+            }
+        }
+
+        return passwordsDto;
+    }
+
+    @Override
+    public PasswordDto updatePassword(UUID idPassword) {
+        return null;
+    }
+
+    @Override
+    public void deletePassword(UUID idPassword) {
+
+    }
+
+    @Override
+    public List<PasswordDto> FindAllMyPasswords(UUID idUser) {
+        return null;
     }
 
 
