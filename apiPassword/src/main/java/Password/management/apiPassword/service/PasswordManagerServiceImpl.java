@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PasswordManagerServiceImpl implements PasswordManagerService {
@@ -50,13 +49,10 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 
     @Override
     public PasswordDto findPasswordById(UUID idPassword) {
-        log.info("Buscando la contraseña con el ID: " + idPassword);
-        PasswordDocument myPassword = passwordRepository.findById(idPassword)
-                .orElseThrow(() -> new UUIDNotFoundException("No se encontró ninguna contraseña con el id " + idPassword));
-
+        PasswordDocument myPassword = sharePasswordById(idPassword);
         LocalDate creationDate = myPassword.getCreationDate();
 
-        if(!(creationDate.equals(LocalDate.now()))) {
+        if (!(creationDate.equals(LocalDate.now()))) {
             passwordMethods.updateSeniority(myPassword);
         }
         return passwordMethods.convertPasswordDocumentToDto(myPassword);
@@ -67,28 +63,48 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         List<PasswordDocument> passwords = passwordRepository.findByUse(use);
         List<PasswordDto> passwordsDto = new ArrayList<>();
 
-        for (PasswordDocument password : passwords) {
-            LocalDate creationDate = password.getCreationDate();
+        log.info("Tamaño de la lista de contraseñas encontradas: {}", passwords.size());
 
-            if (!(creationDate.equals(LocalDate.now()))) {
-                passwordMethods.updateSeniority(password);
-            } else {
+        if (!(passwords.isEmpty())) {
+            for (PasswordDocument password : passwords) {
+                LocalDate creationDate = password.getCreationDate();
+
+                if (!(creationDate.equals(LocalDate.now()))) {
+                    passwordMethods.updateSeniority(password);
+
+                }
                 PasswordDto dto = passwordMethods.convertPasswordDocumentToDto(password);
                 passwordsDto.add(dto);
             }
+        } else {
+            log.info("La lista de contraseñas está vacía.");
         }
-
         return passwordsDto;
     }
 
     @Override
-    public PasswordDto updatePassword(UUID idPassword) {
-        return null;
+    public PasswordDto updatePassword(UUID idPassword, PasswordUse use, String name, String password) {
+        PasswordDocument myPassword = sharePasswordById(idPassword);
+
+        if (password == null) {
+            password = myPassword.getPassword();
+        }
+
+        if (!password.equals(myPassword.getPassword())) {
+            myPassword.setPassword(password);
+            myPassword.setSeniority(0);
+        }
+
+        myPassword.setUse(use);
+        myPassword.setName(name);
+
+        passwordRepository.save(myPassword);
+        return passwordMethods.convertPasswordDocumentToDto(myPassword);
     }
+
 
     @Override
     public void deletePassword(UUID idPassword) {
-
     }
 
     @Override
@@ -96,5 +112,10 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         return null;
     }
 
+    private PasswordDocument sharePasswordById(UUID idPassword) {
+        log.info("Buscando la contraseña con el ID: " + idPassword);
+        return passwordRepository.findById(idPassword)
+                .orElseThrow(() -> new UUIDNotFoundException("No se encontró ninguna contraseña con el id " + idPassword));
 
+    }
 }

@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +28,7 @@ public class PasswordManagerController {
             @ApiResponse(responseCode = "200", description = "Contraseña guardada correctamente"),
             @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
     })
-    @GetMapping(value = "add")
+    @PostMapping(value = "add")
     public ResponseEntity<PasswordDto> createPassword(
             @RequestParam (required = false, defaultValue = "My new password") String name,
             @RequestParam String password,
@@ -62,10 +59,25 @@ public class PasswordManagerController {
     @GetMapping(value = "search/use")
     public ResponseEntity<List<PasswordDto>> searchByUse(
             @RequestParam PasswordUse use
-    ){
+    ) {
         List<PasswordDto> passwordDto = passwordService.findPasswordByUse(use);
         return ResponseEntity.status(HttpStatus.OK).body(passwordDto);
     }
 
+    @Operation(summary = "Actualiza datos de tu contraseña", description = "La fecha de creación se actualizará solo si modificas la contraseña")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Datos actualizados correctamente"),
+            @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
+    })
+    @PutMapping(value = "update")
+    public ResponseEntity<PasswordDto> updatePassword(
+            @RequestParam UUID idPassword,
+            @RequestParam PasswordUse use,
+            @RequestParam (required = false, defaultValue = "My new password") String name,
+            @RequestParam (required = false) String password
+    ){
+        PasswordDto passwordDto = passwordService.updatePassword(idPassword,use,name,password);
+        return ResponseEntity.status(HttpStatus.OK).body(passwordDto);
+    }
 
 }
