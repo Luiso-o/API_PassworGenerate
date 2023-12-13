@@ -41,7 +41,7 @@ public class PasswordManagerMethods {
         int updateDay = getDaysSinceCreation(myPassword.getCreationDate());
         myPassword.setSeniority(updateDay);
         passwordRepository.save(myPassword);
-        log.info("Se ha la antigüedad de la contraseña");
+        log.info("Se ha actualizado la antigüedad de la contraseña");
     }
 
     //calcula los días transcurridos desde la creacion de la contraseña
