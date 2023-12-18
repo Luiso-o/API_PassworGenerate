@@ -1,7 +1,6 @@
 package Password.management.apiPassword.controller;
 
 import Password.management.apiPassword.Dto.PasswordDto;
-import Password.management.apiPassword.document.PasswordDocument;
 import Password.management.apiPassword.enumerations.PasswordUse;
 import Password.management.apiPassword.service.PasswordManagerServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,6 +77,17 @@ public class PasswordManagerController {
     ){
         PasswordDto passwordDto = passwordService.updatePassword(idPassword,use,name,password);
         return ResponseEntity.status(HttpStatus.OK).body(passwordDto);
+    }
+
+    @Operation(summary = "Eliminar una contraseña", description = "Encuentra una contraseña por su id y eliminala")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Datos eliminados correctamente"),
+            @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
+    })
+    @DeleteMapping(value = "delete")
+    public ResponseEntity<Void>deletePassword(@RequestParam UUID idPassword){
+        passwordService.deletePassword(idPassword);
+        return ResponseEntity.ok().build();
     }
 
 }

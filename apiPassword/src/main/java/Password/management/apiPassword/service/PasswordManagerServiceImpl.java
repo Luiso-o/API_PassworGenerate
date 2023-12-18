@@ -93,6 +93,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         if (!password.equals(myPassword.getPassword())) {
             myPassword.setPassword(password);
             myPassword.setSeniority(0);
+            myPassword.setCreationDate(LocalDate.now());
         }
 
         myPassword.setUse(use);
@@ -102,9 +103,10 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         return passwordMethods.convertPasswordDocumentToDto(myPassword);
     }
 
-
     @Override
     public void deletePassword(UUID idPassword) {
+        PasswordDocument password = sharePasswordById(idPassword);
+        passwordRepository.delete(password);
     }
 
     @Override
