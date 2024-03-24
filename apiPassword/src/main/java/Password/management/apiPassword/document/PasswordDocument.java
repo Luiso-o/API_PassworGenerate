@@ -2,7 +2,6 @@ package Password.management.apiPassword.document;
 
 import Password.management.apiPassword.enumerations.PasswordUse;
 import lombok.*;
-import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 

@@ -1,0 +1,21 @@
+:root {
+    --main-principal: linear-gradient(180deg, #906bf5 0%, #fc67fa 100%);
+    --box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  }
+
+.navbar, .footer {
+    background: var(--main-principal);
+    box-shadow: var(--box-shadow);
+}
+
+.navbar a{
+    font-size: 30px;
+}
+
+.information-container {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 2px solid rgba(0, 0, 0, 0.137);
+    background-color: #f8f9fa;
+}

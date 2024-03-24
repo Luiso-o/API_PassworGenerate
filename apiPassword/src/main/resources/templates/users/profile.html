@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del Usuario</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand">Generador de Contraseñas</a>
+        <<a class="navbar-brand justify-content-end" th:href="@{/users/logout}">Cerrar sesión</a>
+
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <!-- Información del Usuario -->
+        <div class="col-md-12 information-container">
+            <div class="profile-section">
+                <div class="profile-info">
+                    <h1 class="text-center">Welcome <span th:text="${userProfile?.name}">Nombre por defecto</span></h1>
+                    <p><strong>ID de Usuario: </strong> <span th:text="${userProfile.id_user}"></span></p>
+                    <p><strong>Nombre: </strong> <span th:text="${userProfile.name}"></span></p>
+                    <p><strong>Apellido: </strong> <span th:text="${userProfile.surname}"></span></p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header text-center">Genera tu Contraseña</div>
+                    <div class="card-body">
+                        <form action="#" th:action="@{/password/generate}" method="get">
+                            <div class="row">
+                                <!-- Longitud del formulario -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="length">Longitud:</label>
+                                        <input type="number" class="form-control" id="length" name="length" min="8">
+                                    </div>
+                                </div>
+                                <!-- Cantidad del formulario -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="quantity">Cantidad:</label>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-primary">Generar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-header text-center">Contraseñas Generadas</div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Contraseña</th>
+                                <th>Nivel de seguridad</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="passwordDto : ${passwords}">
+                                <td th:text="${passwordDto.password}"></td>
+                                <td th:text="${passwordDto.secure}"></td>
+                                <!-- Ejemplo de botones Editar y Guardar -->
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm">Editar</button>
+                                    <button type="button" class="btn btn-primary btn-sm">Guardar</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer mt-5 py-3 bg-primary text-white">
+    <div class="container text-center">
+        © 2024 Generador de Contraseñas | OpenSource.
+    </div>
+</footer>
+
+
+</body>
+
+</html>

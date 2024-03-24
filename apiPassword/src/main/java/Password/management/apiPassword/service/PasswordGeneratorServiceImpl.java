@@ -36,10 +36,10 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
         log.info( myPasswords.size() + " contraseñas generadas.");
 
         myPasswords.forEach(myPassword -> {
-            boolean secure = passwordGeneratorMethods.isSecure(myPassword);
+            String classification = passwordGeneratorMethods.classifyPassword(myPassword);
             passwordDtos.add(PasswordGeneratorDto.builder()
                     .password(myPassword)
-                    .secure(secure ? "Es muy segura" : "Es medianamente segura")
+                    .secure(classification)
                     .build());
         });
         log.info("Se han convertido los documentos en Dtos");

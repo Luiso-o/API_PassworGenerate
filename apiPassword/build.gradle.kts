@@ -28,6 +28,8 @@ dependencies {
 	//Spring tools
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation ("org.springframework.boot:spring-boot-starter-validation")
+
 
 	//lombok
 	compileOnly("org.projectlombok:lombok")
@@ -36,9 +38,15 @@ dependencies {
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-	//Swagger
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
-	implementation("io.swagger:swagger-annotations:1.6.11")
+	//thymeleaf
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+	//Security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation ("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation ("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
 }
 
 tasks.withType<Test> {

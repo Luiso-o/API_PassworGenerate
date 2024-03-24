@@ -1,37 +1,51 @@
 package Password.management.apiPassword.controller;
 
 import Password.management.apiPassword.Dto.PasswordGeneratorDto;
+import Password.management.apiPassword.Dto.UserProfileDto;
 import Password.management.apiPassword.service.PasswordGeneratorServiceImpl;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping(value = "password")
 public class PasswordGeneratorController {
 
-    @Autowired
-    private PasswordGeneratorServiceImpl passwordService;
+    private final PasswordGeneratorServiceImpl passwordService;
 
-    @Operation(summary = "Genera las contraseñas que necesites", description = "La longitud no debe ser menor a 7, de lo" +
-            " contrario el valor por defecto será 8")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Contraseñas generadas correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno, Revise response status 500")
-    })
+    @Autowired
+    public PasswordGeneratorController(PasswordGeneratorServiceImpl passwordService) {
+        this.passwordService = passwordService;
+    }
+
+    @GetMapping("/")
+    public String showForm(Model model) {
+        int length = 0;
+        int quantity = 0;
+        model.addAttribute("length", length);
+        model.addAttribute("quantity", quantity);
+        return "users/profile";
+    }
+
     @GetMapping(value = "generate")
-    public ResponseEntity<List<PasswordGeneratorDto>> generatePasswords(
+    public String generatePasswords(
             @RequestParam (required = false, defaultValue = "8") int length,
-            @RequestParam (required = false, defaultValue = "1") int quantity
+            @RequestParam (required = false, defaultValue = "1") int quantity,
+            Model model, HttpSession session
     ){
+
+        UserProfileDto userProfile = (UserProfileDto) session.getAttribute("userProfile");
+        if (userProfile != null) {
+            model.addAttribute("userProfile", userProfile);
+        }
+
         List<PasswordGeneratorDto> myPasswordsDto = passwordService.generatePasswords(length < 8 ? 8 : length,quantity);
-        return ResponseEntity.status(HttpStatus.OK).body(myPasswordsDto);
+        model.addAttribute("passwords", myPasswordsDto);
+        return "users/profile";
     }
 
 }
