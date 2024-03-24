@@ -5,26 +5,29 @@
     <title>Login</title>
     <link rel="stylesheet" href="/css/login.css">
 </head>
-
 <body>
 
-<h1 class="text-center">Login</h1>
+<div class="card">
+    <form action="#" th:action="@{/users/login}" method="post">
+        <h1 class="text-center">Login</h1>
+        <!--/images/logo.png-->
+        <div class="text-center">
+            <img class="img-fluid" src="/images/logo.png" alt="perfil">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Acces</button>
+        </div>
+        <div th:if="${error}" th:text="${error}" class="error"></div>
+    </form>
+</div>
 
-<form action="#" th:action="@{/users/login}" method="post">
-    <img src="/images/logo.png" alt="login" class="login-icon">
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <button type="submit">Acces</button>
-    </div>
-    <div th:if="${error}" th:text="${error}" class="error"></div>
-</form>
 </body>
-
 </html>

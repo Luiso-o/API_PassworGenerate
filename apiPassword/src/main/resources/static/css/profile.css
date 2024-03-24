@@ -1,6 +1,7 @@
 :root {
-    --main-principal: linear-gradient(180deg, #906bf5 0%, #fc67fa 100%);
+    --main-principal: linear-gradient(180deg, #2193b0 0%, #6dd5ed 100%);
     --box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+    --border-text: 2px 2px 4px #000000;
   }
 
 .navbar, .footer {
@@ -8,8 +9,16 @@
     box-shadow: var(--box-shadow);
 }
 
-.navbar a{
-    font-size: 30px;
+.navbar .generador{
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: var(--border-text);
+}
+
+.navbar .session{
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: var(--border-text);
 }
 
 .information-container {
@@ -18,4 +27,32 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border: 2px solid rgba(0, 0, 0, 0.137);
     background-color: #f8f9fa;
+}
+
+:root {
+    --main-principal: linear-gradient(180deg, #2193b0 0%, #6dd5ed 100%);
+    --box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  }
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar, .footer {
+    background: var(--main-principal);
+    box-shadow: var(--box-shadow);
+}
+
+.card {
+    box-shadow: var(--box-shadow);
+}
+
+.btn-custom {
+    background-color: #4a00e0;
+    border: none;
+}
+
+.btn-custom:hover {
+    background-color: #6900ce;
 }

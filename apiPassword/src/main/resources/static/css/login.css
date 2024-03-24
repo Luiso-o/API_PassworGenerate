@@ -1,9 +1,8 @@
 :root {
-    --main-principal: linear-gradient(180deg, #906bf5 0%, #fc67fa 100%);
+    --main-principal: linear-gradient(180deg, #2193b0 0%, #6dd5ed 100%);
     --box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
     --border-text: 2px 2px 4px #000000;
 }
-
 
 body {
     font-family: 'Arial', sans-serif;
@@ -36,7 +35,7 @@ form {
     max-width: 400px;
 }
 
-h1.text-center {
+.text-center {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
@@ -76,6 +75,10 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
+    &:hover {
+        filter: brightness(120%);
+    }
 }
 
 .error {
