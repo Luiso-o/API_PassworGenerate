@@ -10,10 +10,13 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark mb-3">
     <div class="container">
-        <h1 class="text-center">Bienvenido <span th:text="${userProfile?.name}">Password Manager</span></h1>
-        <a class="navbar-brand session justify-content-end" th:href="@{/users/logout}">Cerrar sesión <i class="fas fa-sign-out-alt"></i></a>
+        <h1 class="text-center">Bienvenido <span th:text="${userProfile?.name}">Usuario</span></h1>
+        <div class="navbar-brand session justify-content-end" style="flex-grow: 1; text-align: right;">
+            <a th:href="@{/users/account}">Mi cuenta</a> |
+            <a th:href="@{/users/logout}">Cerrar sesión <i class="fas fa-sign-out-alt"></i></a>
+        </div>
     </div>
 </nav>
 
@@ -22,8 +25,8 @@
         <!-- Información del Usuario -->
         <div class="col-md-12 information-container">
             <div class="profile-section">
-                <div class="profile-info">
-                    <p><strong>ID de Usuario: </strong> <span th:text="${userProfile.id_user}"></span></p>
+                <div class="profile-info d-flex justify-content-between align-items-center mb-3">
+                    <p class="mb-0"><strong>ID de Usuario: </strong><span th:text="${userProfile.id_user}"></span></p>
                 </div>
 
                 <div class="card">
@@ -66,14 +69,22 @@
                                 <td class="text-center" th:text="${passwordDto.password}"></td>
                                 <td class="text-center" th:text="${passwordDto.secure}"></td>
                                 <td class="text-center">
-                                    <form th:action="@{/manager/savePassword}" method="post">
-                                        <input type="hidden" name="id_user" th:value="${userProfile.id_user}">
-                                        <input type="hidden" name="password" th:value="${passwordDto.password}">
-                                        <input type="text" name="description" placeholder="Agrega una descripcion" required>
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-save icon"></i> Guardar
-                                        </button>
-                                    </form>
+                                    <div class="text-center mt-4">
+                                        <form th:action="@{/manager/savePassword}" method="post"
+                                              class="form-inline justify-content-center">
+                                            <input type="hidden" name="id_user"
+                                                   th:value="${userProfile.id_user}">
+                                            <input type="hidden" name="password"
+                                                   th:value="${passwordDto.password}">
+                                            <div class="form-group mb-2">
+                                                <label class="sr-only">Descripción</label>
+                                                <input type="text" name="description" class="form-control"
+                                                       placeholder="Agrega una descripción" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mb-2 ml-2">Guardar <i
+                                                    class="fas fa-save"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
