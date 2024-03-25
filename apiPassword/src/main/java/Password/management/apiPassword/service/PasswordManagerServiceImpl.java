@@ -1,7 +1,10 @@
 package Password.management.apiPassword.service;
 
 import Password.management.apiPassword.Dto.PasswordDto;
+import Password.management.apiPassword.Dto.UserProfileDto;
+import Password.management.apiPassword.document.Password;
 import Password.management.apiPassword.document.PasswordDocument;
+import Password.management.apiPassword.document.User;
 import Password.management.apiPassword.enumerations.PasswordUse;
 import Password.management.apiPassword.exception.UUIDNotFoundException;
 import Password.management.apiPassword.helper.PasswordManagerMethods;
@@ -18,13 +21,17 @@ import java.util.UUID;
 
 @Service
 public class PasswordManagerServiceImpl implements PasswordManagerService {
-
     private static final Logger log = LoggerFactory.getLogger(PasswordManagerServiceImpl.class);
-    @Autowired
-    private PasswordRepository passwordRepository;
-    @Autowired
-    private PasswordManagerMethods passwordMethods;
+    private final PasswordRepository passwordRepository;
+    private final PasswordManagerMethods passwordMethods;
 
+
+    public PasswordManagerServiceImpl(PasswordRepository passwordRepository, PasswordManagerMethods passwordMethods) {
+        this.passwordRepository = passwordRepository;
+        this.passwordMethods = passwordMethods;
+    }
+
+    //revisar
     @Override
     public PasswordDto savePassword(String password, String name, PasswordUse use) {
         log.info("Creando documento Password");

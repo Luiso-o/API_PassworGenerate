@@ -2,6 +2,7 @@ package Password.management.apiPassword.service;
 
 import Password.management.apiPassword.Dto.UserDto;
 import Password.management.apiPassword.Dto.UserProfileDto;
+import Password.management.apiPassword.document.Password;
 import Password.management.apiPassword.document.User;
 import Password.management.apiPassword.helper.AuthHelper;
 import Password.management.apiPassword.repositories.UserRepository;
@@ -12,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -50,6 +54,31 @@ public class AuthServiceImpl implements AuthService{
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el correo: " + email));
 
         return authHelper.castUserToProfileDto(user);
+    }
+
+    public UserProfileDto savePasswordInUserProfile(User user, String password, String description){
+        Password passwordSaved = Password.builder()
+                .password_id(UUID.randomUUID())
+                .creationDate(LocalDate.now())
+                .seniority(1)
+                .description(description)
+                .password(password)
+                .length(password.length())
+                .build();
+
+        user.getMyPasswords().add(passwordSaved);
+        updatePasswordList(user);
+        return authHelper.castUserToProfileDto(user);
+    }
+
+    @Override
+    public User findUserById(UUID id_user) {
+        return userRepository.findById(id_user).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el id: " + id_user));
+    }
+
+    @Override
+    public void updatePasswordList(User user) {
+        userRepository.save(user);
     }
 
 

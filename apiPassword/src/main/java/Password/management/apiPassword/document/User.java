@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.validation.constraints.NotEmpty;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +30,7 @@ public class User implements UserDetails {
     private String email;
     @NotEmpty(message = "Password cannot be empty")
     private String password;
-    private List<PasswordDocument> myPasswords;
+    private List<Password> myPasswords;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
