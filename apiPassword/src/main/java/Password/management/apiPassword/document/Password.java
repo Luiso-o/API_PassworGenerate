@@ -1,6 +1,5 @@
 package Password.management.apiPassword.document;
 
-import Password.management.apiPassword.enumerations.PasswordUse;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -12,17 +11,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(value = "passwords/deprecated")
-public class PasswordDocument {
-
-    //eliminar despues
+@Document(value = "passwords")
+public class Password {
     @MongoId
     private UUID password_id;
     private LocalDate creationDate;
     private int seniority;
-    private PasswordUse use;
-    private String name;
+    private String description;
     private String password;
     private int length;
-
 }
