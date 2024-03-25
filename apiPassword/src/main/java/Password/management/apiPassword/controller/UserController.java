@@ -2,7 +2,7 @@ package Password.management.apiPassword.controller;
 
 import Password.management.apiPassword.Dto.UserDto;
 import Password.management.apiPassword.Dto.UserProfileDto;
-import Password.management.apiPassword.service.AuthService;
+import Password.management.apiPassword.service.AuthServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {
-    private final AuthService authService;
+    private final AuthServiceImpl authService;
 
     @Autowired
-    public UserController(AuthService authService) {
+    public UserController(AuthServiceImpl authService) {
         this.authService = authService;
     }
 

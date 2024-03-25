@@ -2,29 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Perfil del Usuario</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/css/profile.css">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark mb-4">
     <div class="container">
-        <a class="navbar-brand generador">Generador de Contraseñas</a>
-        <a class="navbar-brand session justify-content-end" th:href="@{/users/logout}">Cerrar sesión</a>
+        <h1 class="text-center">Bienvenido <span th:text="${userProfile?.name}">Password Manager</span></h1>
+        <a class="navbar-brand session justify-content-end" th:href="@{/users/logout}">Cerrar sesión <i class="fas fa-sign-out-alt"></i></a>
     </div>
 </nav>
 
-<div class="container">
+<main class="container">
     <div class="row">
         <!-- Información del Usuario -->
         <div class="col-md-12 information-container">
             <div class="profile-section">
                 <div class="profile-info">
-                    <h1 class="text-center">Bienvenido <span th:text="${userProfile?.name}">Usuario</span></h1>
                     <p><strong>ID de Usuario: </strong> <span th:text="${userProfile.id_user}"></span></p>
-                    <p><strong>Nombre: </strong> <span th:text="${userProfile.name}"></span></p>
-                    <p><strong>Apellido: </strong> <span th:text="${userProfile.surname}"></span></p>
                 </div>
 
                 <div class="card">
@@ -36,19 +35,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="length">Longitud:</label>
-                                        <input type="number" class="form-control" id="length" name="length" min="8">
+                                        <input type="number" class="form-control" id="length" name="length" min="8" placeholder="Mínimo 8">
                                     </div>
                                 </div>
                                 <!-- Cantidad del formulario -->
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="quantity">Cantidad:</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1">
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" placeholder="Mínimo 1">
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center mt-3">
-                                <button type="submit" class="btn btn-primary">Generar</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-feather"></i> Generar</button>
                             </div>
                         </form>
                     </div>
@@ -57,18 +56,17 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Contraseña</th>
-                                <th>Nivel de seguridad</th>
-                                <th>Acción</th>
+                                <th class="text-center">Contraseña</th>
+                                <th class="text-center">Nivel de seguridad</th>
+                                <th class="text-center">Acción</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="passwordDto : ${passwords}">
-                                <td th:text="${passwordDto.password}"></td>
-                                <td th:text="${passwordDto.secure}"></td>
-                                <td>
-                                    <button type="button" class="btn btn-success btn-sm">Editar</button>
-                                    <button type="button" class="btn btn-primary btn-sm">Guardar</button>
+                                <td class="text-center" th:text="${passwordDto.password}"></td>
+                                <td class="text-center" th:text="${passwordDto.secure}"></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-save icon"></i> Guardar</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -78,11 +76,11 @@
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <footer class="footer mt-5 py-3 bg-primary text-white">
     <div class="container text-center">
-        © 2024 Generador de Contraseñas | OpenSource.
+        © 2024 Generador de Contraseñas | <a href="https://github.com/Luiso-o/API_PasswordManager" style="text-decoration-line: none;">OpenSource.</a>
     </div>
 </footer>
 
