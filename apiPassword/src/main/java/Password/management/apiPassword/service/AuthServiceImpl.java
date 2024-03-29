@@ -6,7 +6,6 @@ import Password.management.apiPassword.document.Password;
 import Password.management.apiPassword.document.User;
 import Password.management.apiPassword.helper.AuthHelper;
 import Password.management.apiPassword.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +23,6 @@ public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager authenticationManager;
     private final AuthHelper authHelper;
 
-    @Autowired
     public AuthServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, AuthHelper authHelper) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
@@ -71,6 +69,12 @@ public class AuthServiceImpl implements AuthService{
         return authHelper.castUserToProfileDto(user);
     }
 
+    public UserProfileDto updatePasswordDetails(User user){
+        user.getMyPasswords().forEach(authHelper::updateSeniority);
+        userRepository.save(user);
+        return authHelper.castUserToProfileDto(user);
+    }
+
     @Override
     public User findUserById(UUID id_user) {
         return userRepository.findById(id_user).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el id: " + id_user));
@@ -80,6 +84,5 @@ public class AuthServiceImpl implements AuthService{
     public void updatePasswordList(User user) {
         userRepository.save(user);
     }
-
 
 }
