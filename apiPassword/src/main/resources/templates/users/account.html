@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Perfil del Usuario</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/account.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark mb-3">
+    <div class="container">
+        <h1 class="text-center">Administrar mis Contraseñas</span></h1>
+        <div class="navbar-brand session justify-content-end" style="flex-grow: 1; text-align: right;">
+            <a href="#" data-toggle="modal" data-target="#createPasswordModal">Nueva contraseña</a> |
+            <a th:href="@{/users/logout}">Cerrar sesión <i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+
+    <div class="row">
+        <!-- Información del Usuario -->
+        <div class="col-md-12 information-container">
+            <div class="profile-section">
+                <div class="profile-info d-flex justify-content-between align-items-center mb-3">
+                    <p class="mb-0"><strong>ID de Usuario: </strong><span
+                            th:text="${userProfile.id_user}"></span></p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header text-center">Gestionar mis contraseñas</div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Contraseña</th>
+                                <th>Antigüedad</th>
+                                <th>descripción</th>
+                                <th>Longitud</th>
+                                <th>ID</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="passwordDto : ${userProfile.getMyPasswords}">
+                                <td th:text="${passwordDto.password}"></td>
+                                <td th:text="${passwordDto.seniority + ' días'}"></td>
+                                <td th:text="${passwordDto.description}"></td>
+                                <td th:text="${passwordDto.length + ' caracteres'}"></td>
+                                <td class="hidden-id" th:title="${passwordDto.password_id}">Ver 🔑</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary mb-2 ml-2">Editar</button>
+                                    <button type="submit" class="btn btn-danger mb-2 ml-2">Eliminar</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Crear contrasena-->
+    <div class="modal fade" id="createPasswordModal" tabindex="-1" role="dialog" aria-labelledby="createPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPasswordModalLabel">Nueva Contraseña</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/manager/savePassword}" method="post">
+                    <div class="modal-body">
+                        <!-- Campos del formulario -->
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Descripción</label>
+                            <input type="text" class="form-control" id="description" name="description" required>
+                        </div>
+                        <input type="hidden" name="id_user" th:value="${userProfile.id_user}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="footer mt-5 py-3 bg-primary text-white">
+    <div class="container text-center">
+        © 2024 Generador de Contraseñas | <a href="https://github.com/Luiso-o/API_PasswordManager" style="text-decoration-line: none;">OpenSource.</a>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

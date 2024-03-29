@@ -12,4 +12,5 @@ public interface AuthService {
     UserProfileDto authenticateUser(String email, String password);
     User findUserById(UUID id_user);
     void updatePasswordList(User user);
+    UserProfileDto updatePasswordDetails(User user);
 }

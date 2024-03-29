@@ -1,0 +1,106 @@
+:root {
+    --main-principal: linear-gradient(180deg, #2193b0 0%, #6dd5ed 100%);
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --border-text: 2px 2px 4px #000000;
+    --btn-primary: #007bff;
+    --btn-primary-hover: #0056b3;
+    --btn-success: #28a745;
+    --btn-success-hover: #1e7e34;
+    --btn-save: #6c757d;
+    --btn-save-hover: #5a6268;
+    --text-color: #212529;
+    --footer-background: #007bff;
+    --link-color: #fff;
+    --link-hover-color: #bbeffd;
+    --input-border-focus: #80bdff;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: #f8f9fa;
+    color: var(--text-color);
+}
+
+
+.navbar, .footer {
+    background: var(--main-principal);
+    box-shadow: var(--box-shadow);
+}
+
+.navbar h1 {
+    color: #f8f9fa;
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: var(--border-text);
+}
+
+.navbar .session {
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: var(--border-text);
+    cursor: pointer;
+}
+
+.card {
+    box-shadow: var(--box-shadow);
+    border: none;
+}
+
+.card-header {
+    background-color: #d6d6d6d2;
+    color: black;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-primary {
+    background-color: var(--btn-primary);
+    border-color: var(--btn-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-hover);
+    border-color: var(--btn-primary-hover);
+}
+
+.footer {
+    background-color: var(--footer-background);
+    color: var(--link-color);
+}
+
+a, a:hover {
+    text-decoration: none;
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+form input:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+button {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .navbar h1 {
+        font-size: 20px;
+    }
+}

@@ -1,17 +1,16 @@
 package Password.management.apiPassword.Dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-
+import lombok.*;
 import java.util.UUID;
 
 @Data
-@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class PasswordDto {
-    private String password_id;
+    private UUID password_id;
+    private int seniority;
+    private String description;
     private String password;
-    private String creationDate;
-    private String length;
+    private int length;
 }

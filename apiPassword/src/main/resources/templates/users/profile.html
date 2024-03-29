@@ -12,9 +12,9 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark mb-3">
     <div class="container">
-        <h1 class="text-center">Bienvenido <span th:text="${userProfile?.name}">Usuario</span></h1>
+        <h1 class="text-center">Welcome <span th:text="${userProfile?.name}">Usuario</span></h1>
         <div class="navbar-brand session justify-content-end" style="flex-grow: 1; text-align: right;">
-            <a th:href="@{/users/account}">Mi cuenta</a> |
+            <a th:href="@{/manager/account(id_user=${userProfile.id_user})}">Mi cuenta</a> |
             <a th:href="@{/users/logout}">Cerrar sesión <i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
