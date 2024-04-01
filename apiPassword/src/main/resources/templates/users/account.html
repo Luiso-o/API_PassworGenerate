@@ -55,8 +55,8 @@
                                 <td th:text="${passwordDto.length + ' caracteres'}"></td>
                                 <td class="hidden-id" th:title="${passwordDto.password_id}">Ver 🔑</td>
                                 <td>
-                                    <a href="#" th:href="@{/manager/editPassword/{passwordId}(passwordId=${passwordDto.password_id})}" class="btn btn-primary mb-2 ml-2">Editar</a>
-                                    <button type="submit" class="btn btn-danger mb-2 ml-2">Eliminar</button>
+                                    <a th:href="@{/manager/editPassword/{passwordId}(passwordId=${passwordDto.password_id})}" class="btn btn-primary mb-2 ml-2">Editar</a>
+                                    <a type="submit" class="btn btn-danger mb-2 ml-2" th:href="@{/manager/delete(id_user=${userProfile.id_user}, id_password=${passwordDto.password_id})}"  onclick="return confirm('¿Estás seguro?')">Eliminar</a>
                                 </td>
                             </tr>
                             </tbody>
