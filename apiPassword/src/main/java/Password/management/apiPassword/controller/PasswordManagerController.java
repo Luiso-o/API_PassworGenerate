@@ -4,10 +4,12 @@ import Password.management.apiPassword.Dto.UserProfileDto;
 import Password.management.apiPassword.document.Password;
 import Password.management.apiPassword.document.User;
 import Password.management.apiPassword.service.AuthServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -41,29 +43,37 @@ public class PasswordManagerController {
         return "users/account";
     }
 
+    @GetMapping("/editPassword/{passwordId}")
+    public String editPasswordForm(@PathVariable("passwordId") UUID passwordId, HttpSession session, Model model) {
+        UserProfileDto userProfile = (UserProfileDto) session.getAttribute("userProfile");
+
+        if (userProfile == null) {
+            return "redirect:users/login";
+        }
+
+        try {
+            Password password = authService.findPasswordById(userProfile.getMyPasswords(), passwordId);
+            model.addAttribute("password", password);
+            model.addAttribute("userProfile", userProfile);
+        } catch (Exception e) {
+            return "redirect:/errorPage";
+        }
+
+        return "users/editPassword";
+    }
+
     @PostMapping("/updatePassword")
     public String updatePassword(@RequestParam("id_user") UUID idUser,
                                  @RequestParam("id_password") UUID idPassword,
                                  @RequestParam("password") String newPassword,
-                                 @RequestParam("description") String newDescription) {
-        // Encontrar el usuario por ID
+                                 @RequestParam("description") String newDescription,
+                                 Model model) {
+
         User user = authService.findUserById(idUser);
+        UserProfileDto userProfile = authService.updatePasswordInPasswordList(user,idPassword, newPassword, newDescription);
+        model.addAttribute("userProfile", userProfile);
 
-        // Encontrar la contraseña específica en la lista de contraseñas del usuario
-        Password passwordToUpdate = user.getMyPasswords().stream()
-                .filter(password -> password.getPassword_id().equals(idPassword))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Contraseña no encontrada"));
-
-        // Actualizar la contraseña y la descripción
-        passwordToUpdate.setPassword(newPassword); // Asegúrate de encriptar la contraseña según tus necesidades
-        passwordToUpdate.setDescription(newDescription);
-
-        // Guardar el usuario actualizado en la base de datos
-        authService.updatePasswordList(user);
-
-        // Redirigir al usuario a la página de perfil o a otra página de éxito
-        return "redirect:/user/profile"; // Asegúrate de cambiar la URL a donde necesites redirigir al usuario
+        return "users/account";
     }
 
 
