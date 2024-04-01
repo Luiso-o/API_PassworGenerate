@@ -5,6 +5,7 @@ import Password.management.apiPassword.Dto.UserProfileDto;
 import Password.management.apiPassword.document.Password;
 import Password.management.apiPassword.document.User;
 import Password.management.apiPassword.helper.AuthHelper;
+import Password.management.apiPassword.repositories.PasswordRepository;
 import Password.management.apiPassword.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,8 +13,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -76,6 +80,36 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    public Password findPasswordById(List<Password> passwordList, UUID passwordId) {
+        return passwordList.stream()
+                .filter(password -> password.getPassword_id().equals(passwordId))
+                .findFirst().orElseThrow(() -> new UsernameNotFoundException("Password not found"));
+    }
+
+    @Transactional
+    public UserProfileDto updatePasswordInPasswordList(User user, UUID password_id, String newPassword, String newDescription){
+       Password passwordToUpdate = findPasswordById(user.getMyPasswords(), password_id);
+        boolean updateNeeded = false;
+
+        if (!passwordToUpdate.getPassword().equals(newPassword)) {
+            passwordToUpdate.setPassword(newPassword);
+            passwordToUpdate.setCreationDate(LocalDate.now());
+            passwordToUpdate.setLength(newPassword.length());
+            updateNeeded = true;
+        }
+
+        if (!passwordToUpdate.getDescription().equals(newDescription)) {
+            passwordToUpdate.setDescription(newDescription);
+            updateNeeded = true;
+        }
+
+        if (updateNeeded) {
+            userRepository.save(user);
+        }
+       return updatePasswordDetails(user);
+    }
+
+    @Override
     public User findUserById(UUID id_user) {
         return userRepository.findById(id_user).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el id: " + id_user));
     }
@@ -84,5 +118,6 @@ public class AuthServiceImpl implements AuthService{
     public void updatePasswordList(User user) {
         userRepository.save(user);
     }
+
 
 }

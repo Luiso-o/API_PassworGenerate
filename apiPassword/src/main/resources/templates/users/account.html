@@ -40,8 +40,8 @@
                             <thead>
                             <tr>
                                 <th>Contraseña</th>
-                                <th>Antigüedad</th>
                                 <th>descripción</th>
+                                <th>Ultima Actualización</th>
                                 <th>Longitud</th>
                                 <th>ID</th>
                                 <th>Acción</th>
@@ -50,12 +50,12 @@
                             <tbody>
                             <tr th:each="passwordDto : ${userProfile.getMyPasswords}">
                                 <td th:text="${passwordDto.password}"></td>
-                                <td th:text="${passwordDto.seniority + ' días'}"></td>
                                 <td th:text="${passwordDto.description}"></td>
+                                <td th:text="${passwordDto.seniority + ' días'}"></td>
                                 <td th:text="${passwordDto.length + ' caracteres'}"></td>
                                 <td class="hidden-id" th:title="${passwordDto.password_id}">Ver 🔑</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary mb-2 ml-2">Editar</button>
+                                    <a href="#" th:href="@{/manager/editPassword/{passwordId}(passwordId=${passwordDto.password_id})}" class="btn btn-primary mb-2 ml-2">Editar</a>
                                     <button type="submit" class="btn btn-danger mb-2 ml-2">Eliminar</button>
                                 </td>
                             </tr>
