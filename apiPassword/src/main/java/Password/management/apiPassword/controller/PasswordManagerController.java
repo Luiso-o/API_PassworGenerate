@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -76,5 +75,14 @@ public class PasswordManagerController {
         return "users/account";
     }
 
+    @GetMapping("/delete")
+    public String deleteProduct(@RequestParam("id_user") UUID idUser,
+                                @RequestParam("id_password") UUID idPassword,
+                                Model model){
+        User user = authService.findUserById(idUser);
+        UserProfileDto userProfile = authService.deletePassword(user, idPassword);
+        model.addAttribute("userProfile", userProfile);
+        return "users/account";
+    }
 
 }

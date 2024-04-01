@@ -5,7 +5,6 @@ import Password.management.apiPassword.Dto.UserProfileDto;
 import Password.management.apiPassword.document.Password;
 import Password.management.apiPassword.document.User;
 import Password.management.apiPassword.helper.AuthHelper;
-import Password.management.apiPassword.repositories.PasswordRepository;
 import Password.management.apiPassword.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,8 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -108,6 +107,24 @@ public class AuthServiceImpl implements AuthService{
         }
        return updatePasswordDetails(user);
     }
+
+    public UserProfileDto deletePassword(User user, UUID passwordId) {
+        boolean isRemoved = false;
+        Iterator<Password> iterator = user.getMyPasswords().iterator();
+        while (iterator.hasNext()) {
+            Password password = iterator.next();
+            if (password.getPassword_id().equals(passwordId)) {
+                iterator.remove();
+                isRemoved = true;
+                break;
+            }
+        }
+        if (isRemoved) {
+            userRepository.save(user);
+        }
+        return updatePasswordDetails(user);
+    }
+
 
     @Override
     public User findUserById(UUID id_user) {
